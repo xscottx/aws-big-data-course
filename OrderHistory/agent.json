@@ -1,15 +1,12 @@
 {
   "cloudwatch.emitMetrics": true,
-  "kinesis.endpoint": "",
-  "firehose.endpoint": "",
-
-  "awsAccessKeyId": "AKIAJF4KVZWOY65QWOOA",
-  "awsSecretAccessKey": "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",
-
+  "kinesis.endpoint": "kinesis.us-west-2.amazonaws.com",
+  "firehose.endpoint": "firehose.us-west-2.amazonaws.com",
+  
   "flows": [
     {
       "filePattern": "/var/log/cadabra/*.log",
-      "kinesisStream": "CadabraOrders",
+      "kinesisStream": "CadabraStream",
       "partitionKeyOption": "RANDOM",
       "dataProcessingOptions": [
          {
@@ -17,6 +14,10 @@
             "customFieldNames": ["InvoiceNo", "StockCode", "Description", "Quantity", "InvoiceDate", "UnitPrice", "Customer", "Country"]
          }
       ]
+    },
+    {
+      "filePattern": "/var/log/cadabra/*.log",
+      "deliveryStream": "CadabraHose"
     }
   ]
 }

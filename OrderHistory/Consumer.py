@@ -6,13 +6,13 @@ import json
 import decimal
 
 # Kinesis setup
-kinesis = boto3.client("kinesis")
+kinesis = boto3.client("kinesis", region_name="us-west-2")
 shard_id = "shardId-000000000000" 
-pre_shard_it = kinesis.get_shard_iterator(StreamName="CadabraOrders", ShardId=shard_id, ShardIteratorType="LATEST")
+pre_shard_it = kinesis.get_shard_iterator(StreamName="CadabraStream", ShardId=shard_id, ShardIteratorType="LATEST")
 shard_it = pre_shard_it["ShardIterator"]
 
 # DynamoDB setup
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
 table = dynamodb.Table('CadabraOrders')
 
 while 1==1:

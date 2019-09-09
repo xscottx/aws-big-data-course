@@ -1,0 +1,35 @@
+Big Data Lab
+
+1. Create EC2
+    1. sudo yum install aws-kinesis-agent
+    2. mkdir /var/log/cadabra
+    3. sudo chkconfig aws-kinesis-agent on
+    4. sudo service aws-kinesis-agent start
+    5. wget http://media.sundog-soft.com/AWSBigData/LogGenerator.zip; unzip 
+    6. chmod a+x LogGenerator.py
+    7. sudo vi /etc/aws-kinesis/agent.json
+    8. sudo ./LogGenerator.py 100
+    9. sudo pip install boto3
+    10. mkdir ~/.aws; vi config
+      1. [default]
+      2. region=us-west-2
+    11. wget http://media.sundog-soft.com/AWSBigData/Consumer.py; chmod a+x Consumer.py
+    12. sudo ./Consumer.py // while runnign a sudo ./LogGenerator.py 10
+2. Create Kinesis Data Stream
+3. Create Kinesis Firehose
+    1. set buffer time down to 60s
+4. Create DynamoDB
+    1, Table: CadabraOrders, PK: CustomerID, SK: OrderID
+5. Create EMR, 5.26.0
+    1. Spark 2.4.3, Hadoop 2.8.5, Ganglia 3.7.2, Zeppelin 0.8.1
+    2. m5.xlarge (64GB of EBS), 3 instances (1 master, and 2 nodes)
+    3. Use/Create EMR role, and EC2 role for EMR
+    4. Add SSH to master
+    5. SSH command:
+        1. ssh -i ~/.aws/VoMBP-EC2.pem hadoop@ec2-34-223-53-32.us-west-2.compute.amazonaws.com
+        2. cp /usr/lib/spark/examples/src/main/python/ml/als_example.py .
+        3. hadoop fs -mkdir -p /user/hadoop/data/mllib/als # create folder in hadoop
+        4. hadoop fs -copyFromLocal /usr/lib/spark/data/mllib/als/sample_movielens_ratings.txt /user/hadoop/data/mllib/als/sample_movielens_ratings.txt # copies file to hadoop folder
+        5. spark-submit als_example.py # run job from master node, should distribute script across cluster on all machines and build a recommendation model
+        6. sudo vi als_example.py # spark.sparkContext.setLogLevel("ERROR") after session
+

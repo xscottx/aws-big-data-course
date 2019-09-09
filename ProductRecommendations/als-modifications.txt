@@ -1,4 +1,4 @@
-    lines = spark.read.text("s3://orderlogs-sundogsoft/2019/02/11/16/*").rdd
+    lines = spark.read.text("s3://orderlogs-voco/2019/09/07/22/*").rdd
     parts = lines.map(lambda row: row.value.split(','))
     #Filter out postage, shipping, bank charges, discounts, commissions
     productsOnly = parts.filter(lambda p: p[1][0:5].isdigit())
